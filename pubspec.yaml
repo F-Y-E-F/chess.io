@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_stateless_chessboard: ^0.0.6
   google_fonts: ^2.1.0
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:chess_io/data/remote/fetch_chess_data.dart';
+import 'package:chess_io/ui/helpers/custom_page_transition.dart';
+import 'package:chess_io/ui/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
 class InputNicknameScreen extends StatelessWidget {
   @override
@@ -26,7 +26,8 @@ class InputNicknameScreen extends StatelessWidget {
                   ),
                   Text(
                     '.io',
-                    style: theme.textTheme.headline1.copyWith(color: Colors.red[600]),
+                    style: theme.textTheme.headline1
+                        .copyWith(color: Colors.red[600]),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -49,7 +50,12 @@ class InputNicknameScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 15),
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await FetchChessData.fetchChessComData('');
+                    Navigator.of(context).push(CustomPageTransition(
+                        page: HomeScreen(),
+                        transitionType: PageTransitions.SCALE));
+                  },
                   child: Text("Go inside!"),
                 ))
           ],
