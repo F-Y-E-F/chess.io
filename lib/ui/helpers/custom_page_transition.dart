@@ -8,11 +8,17 @@ class CustomPageTransition extends PageRouteBuilder {
   final Widget page;
   final PageTransitions transitionType;
   final bool isLeft;
+  final dynamic settingsArgs;
+
+  @override
+  // TODO: implement settings
+  RouteSettings get settings => RouteSettings(arguments: this.settingsArgs);
 
   CustomPageTransition(
       {@required this.page,
       this.transitionType = PageTransitions.SLIDE,
-      this.isLeft = true})
+      this.isLeft = true,
+      this.settingsArgs})
       : super(
             pageBuilder: (
               BuildContext context,

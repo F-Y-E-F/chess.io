@@ -5,28 +5,19 @@ import 'package:http/http.dart' as http;
 class FetchChessData{
 
 
-  static Future fetchChessComData(String userNick) async {
-    final playerDataResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/aronpm'));
-    final playerStatsResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/aronpm'));
+  static Future<PlayerData> fetchChessComData(String userNick) async {
+    print(userNick);
+    final playerDataResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick'));
+    //final playerStatsResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick'));
 
-    if (playerDataResponse.statusCode == 200 && playerStatsResponse.statusCode == 200) {
+    if (playerDataResponse.statusCode == 200 /*&& *//*playerStatsResponse.statusCode == 200*/) {
       final jsonPlayerData = jsonDecode(playerDataResponse.body);
-      final jsonPlayerStats = jsonDecode(playerDataResponse.body);
-
-      PlayerData data = PlayerData.fromJson(jsonPlayerData);
-      print(data.avatar);
-      print(data.playerId);
-      print(data.url);
-      print(data.name);
-      print(data.userName);
-      print(data.country);
-      print(data.followers);
-      print(data.lastOnline);
-      print(data.joined);
+      // final jsonPlayerStats = jsonDecode(playerDataResponse.body);
+      return PlayerData.fromJson(jsonPlayerData);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed to load album');
+      throw Exception('Cannot find player with provided nick on chess.com');
     }
   }
 

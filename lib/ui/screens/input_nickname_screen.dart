@@ -1,9 +1,17 @@
+import 'dart:io';
+
+import 'package:chess_io/data/models/player_data.dart';
 import 'package:chess_io/data/remote/fetch_chess_data.dart';
 import 'package:chess_io/ui/helpers/custom_page_transition.dart';
+import 'package:chess_io/ui/helpers/dialogs.dart';
+import 'package:chess_io/ui/helpers/snacks.dart';
 import 'package:chess_io/ui/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class InputNicknameScreen extends StatelessWidget {
+  final _nickTextController = TextEditingController();
+  final _focus = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -43,18 +51,19 @@ class InputNicknameScreen extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 30),
             ),
             TextField(
+              controller: _nickTextController,
+              focusNode: _focus,
               cursorColor: theme.primaryColor,
               decoration: InputDecoration(labelText: 'Enter Your Nickname'),
+              onSubmitted: (val) async => await submitRequest(context),
             ),
             Container(
                 padding: const EdgeInsets.only(top: 15),
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () async {
-                    await FetchChessData.fetchChessComData('');
-                    Navigator.of(context).push(CustomPageTransition(
-                        page: HomeScreen(),
-                        transitionType: PageTransitions.SCALE));
+                    _focus.unfocus();
+                    await submitRequest(context);
                   },
                   child: Text("Go inside!"),
                 ))
@@ -62,5 +71,28 @@ class InputNicknameScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> submitRequest(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) => Dialogs().getLoadingDialog(),
+        barrierDismissible: false);
+    try {
+      final playerData =
+          await FetchChessData.fetchChessComData(_nickTextController.text);
+      Navigator.of(context).pop();
+      playerData.name!=null ?
+        Navigator.of(context).push(CustomPageTransition(
+            page: HomeScreen(),
+            transitionType: PageTransitions.SCALE,
+            settingsArgs: playerData)): throw Exception("Cannot get user data");
+    } on SocketException {
+      Navigator.of(context).pop();
+      Snacks.showSnack("Check your internet connection", context);
+    } catch (e) {
+      Navigator.of(context).pop();
+      Snacks.showSnack(e.message.toString(), context);
+    }
   }
 }

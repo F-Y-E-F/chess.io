@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                   primary: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 20)))),
+                  padding: const EdgeInsets.symmetric(vertical: 20))),snackBarTheme: SnackBarThemeData(backgroundColor:  const Color(0xff0D0221),behavior: SnackBarBehavior.floating,)),
       home: InputNicknameScreen(),
     );
   }
