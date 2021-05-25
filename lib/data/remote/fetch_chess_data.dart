@@ -5,18 +5,24 @@ import 'package:http/http.dart' as http;
 class FetchChessData{
 
 
-  static Future<PlayerData> fetchChessComData(String userNick) async {
-    print(userNick);
+  static Future<PlayerData> fetchChessComPlayerData(String userNick) async {
     final playerDataResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick'));
-    //final playerStatsResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick'));
 
-    if (playerDataResponse.statusCode == 200 /*&& *//*playerStatsResponse.statusCode == 200*/) {
+    if (playerDataResponse.statusCode == 200) {
       final jsonPlayerData = jsonDecode(playerDataResponse.body);
-      // final jsonPlayerStats = jsonDecode(playerDataResponse.body);
       return PlayerData.fromJson(jsonPlayerData);
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
+      throw Exception('Cannot find player with provided nick on chess.com');
+    }
+  }
+
+  static Future<PlayerData> fetchChessComPlayerStats(String userNick) async {
+    final playerStatsResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick/stats'));
+
+    if (playerStatsResponse.statusCode == 200 ) {
+      final jsonPlayerStats = jsonDecode(playerStatsResponse.body);
+      return PlayerData.fromJson(jsonPlayerStats);
+    } else {
       throw Exception('Cannot find player with provided nick on chess.com');
     }
   }

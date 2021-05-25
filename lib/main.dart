@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: const Color(0xffefefef),
           primaryColor: const Color(0xff0D0221),
           accentColor: Colors.red[600],
           textTheme: GoogleFonts.openSansTextTheme().copyWith(
@@ -21,8 +21,10 @@ class MyApp extends StatelessWidget {
                 textStyle: TextStyle(color: const Color(0xff0D0221)),
                 fontSize: 52,
                 fontWeight: FontWeight.w600),
-            headline2:
-                GoogleFonts.lato(textStyle: TextStyle(color: Colors.red)),
+            headline2: GoogleFonts.lato(
+                textStyle: TextStyle(color: const Color(0xff0D0221)),
+                fontSize: 36,
+                fontWeight: FontWeight.w600),
             headline3:
                 GoogleFonts.lato(textStyle: TextStyle(color: Colors.red)),
             headline4: GoogleFonts.lato(
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
             headline5:
                 GoogleFonts.lato(textStyle: TextStyle(color: Colors.red)),
             headline6:
-                GoogleFonts.lato(textStyle: TextStyle(color: Colors.red)),
+                GoogleFonts.lato(textStyle: TextStyle(color: Colors.grey[400],fontSize: 18)),
           ),
           inputDecorationTheme: InputDecorationTheme(
               labelStyle: TextStyle(color: const Color(0xff0D0221)),

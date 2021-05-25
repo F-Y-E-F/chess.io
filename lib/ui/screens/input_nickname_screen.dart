@@ -16,6 +16,7 @@ class InputNicknameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -79,14 +80,13 @@ class InputNicknameScreen extends StatelessWidget {
         builder: (context) => Dialogs().getLoadingDialog(),
         barrierDismissible: false);
     try {
-      final playerData =
-          await FetchChessData.fetchChessComData(_nickTextController.text);
+      final playerData = await FetchChessData.fetchChessComPlayerData(_nickTextController.text);
+      final playerStats = await FetchChessData.fetchChessComPlayerStats(_nickTextController.text);
       Navigator.of(context).pop();
-      playerData.name!=null ?
-        Navigator.of(context).push(CustomPageTransition(
-            page: HomeScreen(),
-            transitionType: PageTransitions.SCALE,
-            settingsArgs: playerData)): throw Exception("Cannot get user data");
+      Navigator.of(context).push(CustomPageTransition(
+          page: HomeScreen(),
+          transitionType: PageTransitions.SCALE,
+          settingsArgs: {'data':playerData,'stats':playerStats}));
     } on SocketException {
       Navigator.of(context).pop();
       Snacks.showSnack("Check your internet connection", context);
