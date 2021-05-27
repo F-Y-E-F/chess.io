@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:chess_io/data/models/player_data.dart';
 import 'package:chess_io/data/remote/fetch_chess_data.dart';
+import 'package:chess_io/data/remote/providers/chess_data_provider.dart';
 import 'package:chess_io/ui/helpers/custom_page_transition.dart';
 import 'package:chess_io/ui/helpers/dialogs.dart';
 import 'package:chess_io/ui/helpers/snacks.dart';
 import 'package:chess_io/ui/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class InputNicknameScreen extends StatelessWidget {
   final _nickTextController = TextEditingController();
@@ -80,19 +82,19 @@ class InputNicknameScreen extends StatelessWidget {
         builder: (context) => Dialogs().getLoadingDialog(),
         barrierDismissible: false);
     try {
-      final playerData = await FetchChessData.fetchChessComPlayerData(_nickTextController.text);
-      final playerStats = await FetchChessData.fetchChessComPlayerStats(_nickTextController.text);
+      final provider = Provider.of<ChessDataProvider>(context, listen: false);
+      await provider.setData(_nickTextController.text);
+      await provider.setStats(_nickTextController.text);
+
       Navigator.of(context).pop();
       Navigator.of(context).push(CustomPageTransition(
-          page: HomeScreen(),
-          transitionType: PageTransitions.SCALE,
-          settingsArgs: {'data':playerData,'stats':playerStats}));
+          page: HomeScreen(), transitionType: PageTransitions.SCALE));
     } on SocketException {
       Navigator.of(context).pop();
       Snacks.showSnack("Check your internet connection", context);
     } catch (e) {
       Navigator.of(context).pop();
-      Snacks.showSnack(e.message.toString(), context);
+      Snacks.showSnack(e.toString(), context);
     }
   }
 }
