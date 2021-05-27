@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:chess_io/data/models/game.dart';
 import 'package:chess_io/data/models/player_data.dart';
 import 'package:chess_io/data/models/player_stats/player_stats.dart';
 import 'package:http/http.dart' as http;
@@ -19,10 +20,23 @@ class FetchChessData{
 
   static Future<PlayerStats> fetchChessComPlayerStats(String userNick) async {
     final playerStatsResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick/stats'));
-
     if (playerStatsResponse.statusCode == 200 ) {
       final jsonPlayerStats = jsonDecode(playerStatsResponse.body);
       return PlayerStats.fromJson(jsonPlayerStats);
+    } else {
+      throw Exception('Cannot find player with provided nick on chess.com');
+    }
+  }
+
+  static Future<List<Game>> fetchLastMonthPlayerGames(String userNick) async {
+    final playerGamesResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick/games/2021/05'));
+    if (playerGamesResponse.statusCode == 200 ) {
+      final jsonPlayerStats = jsonDecode(playerGamesResponse.body);
+      List<Game> games = [];
+      for(var gameMap in jsonPlayerStats['games']){
+        games.add(Game.fromJson(gameMap,userNick));
+      }
+      return games;
     } else {
       throw Exception('Cannot find player with provided nick on chess.com');
     }

@@ -1,4 +1,5 @@
 import 'package:chess_io/data/remote/providers/chess_data_provider.dart';
+import 'package:chess_io/data/remote/providers/games_provider.dart';
 import 'package:chess_io/ui/screens/input_nickname_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ChessDataProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (BuildContext context) => ChessDataProvider()),
+        ChangeNotifierProvider(create: (BuildContext context) => GamesProvider()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
