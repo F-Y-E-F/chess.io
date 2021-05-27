@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:chess_io/data/models/player_data.dart';
-import 'package:chess_io/data/models/player_stats.dart';
+import 'package:chess_io/data/models/player_stats/player_stats.dart';
 import 'package:http/http.dart' as http;
 
 class FetchChessData{
@@ -22,7 +22,6 @@ class FetchChessData{
 
     if (playerStatsResponse.statusCode == 200 ) {
       final jsonPlayerStats = jsonDecode(playerStatsResponse.body);
-      print(jsonPlayerStats);
       return PlayerStats.fromJson(jsonPlayerStats);
     } else {
       throw Exception('Cannot find player with provided nick on chess.com');

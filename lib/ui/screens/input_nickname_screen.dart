@@ -95,6 +95,7 @@ class InputNicknameScreen extends StatelessWidget {
     } catch (e) {
       Navigator.of(context).pop();
       Snacks.showSnack(e.toString(), context);
+      print(e);
     }
   }
 }

@@ -24,7 +24,7 @@ class PlayerData {
     @required this.joined,
   });
 
-  String get formattedUserName => toBeginningOfSentenceCase(userName);
+  String get formattedUserName => toBeginningOfSentenceCase(userName ?? "username");
 
   factory PlayerData.fromJson(Map<String, dynamic> map) {
     return PlayerData(

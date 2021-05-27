@@ -11,11 +11,11 @@ class HomeScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final provider = Provider.of<ChessDataProvider>(context);
     final playerData = provider.playerData;
+    final playerFullStats = provider.playerFullStats;
     final playerStats = provider.playerStats;
 
-
     return Scaffold(
-      body: SingleChildScrollView(
+      body: (playerStats != null) ? SingleChildScrollView(
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -54,18 +54,19 @@ class HomeScreen extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 10.0),
                 height: 50.0,
                 child: ListView(
-                  padding: const EdgeInsets.only(left : 15),
+                  padding: const EdgeInsets.only(left: 15),
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    ChessTypeCard(),
-                    ChessTypeCard(),
-                    ChessTypeCard(),
-                    ChessTypeCard()
+                    if (playerFullStats.blitzStats != null) ChessTypeCard("Blitz",changeStats),
+                    if (playerFullStats.bulletStats != null) ChessTypeCard("Bullet",changeStats),
+                    if (playerFullStats.dailyStats != null) ChessTypeCard("Daily",changeStats),
+                    if (playerFullStats.rapidStats != null) ChessTypeCard("Rapid",changeStats)
                   ],
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(left: 20,right: 20,top: 30,bottom: 10),
+                margin: const EdgeInsets.only(
+                    left: 20, right: 20, top: 30, bottom: 10),
                 width: double.infinity,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -75,15 +76,23 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                          Text("Current Ranking",style: GoogleFonts.lato(color: Colors.grey[500],fontSize: 16),),
-                          Text(playerStats.blitzStats.currentRating.toString(),style: theme.textTheme.headline1,),
+                        Text(
+                          "Current Ranking",
+                          style: GoogleFonts.lato(
+                              color: Colors.grey[500], fontSize: 16),
+                        ),
+                        Text(
+                          (playerStats.currentRating?? 0).toString(),
+                          style: theme.textTheme.headline1,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(left: 20,right: 20,top: 0,bottom: 10),
+              if(playerStats.bestRating!=null) Container(
+                margin: const EdgeInsets.only(
+                    left: 20, right: 20, top: 0, bottom: 10),
                 width: double.infinity,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -93,19 +102,32 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        Text("Best Ranking (${playerStats.blitzStats.formattedDate})",style: GoogleFonts.lato(color: Colors.grey[500],fontSize: 16),),
-                        Text(playerStats.blitzStats.bestRating.toString() ,style: theme.textTheme.headline1,),
+                        Text(
+                          "Best Ranking (${playerStats.formattedDate})",
+                          style: GoogleFonts.lato(
+                              color: Colors.grey[500], fontSize: 16),
+                        ),
+                        Text(
+                          playerStats.bestRating.toString(),
+                          style: theme.textTheme.headline1,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-              StatsPieChart(playerStats.blitzStats.wins,playerStats.blitzStats.draws,playerStats.blitzStats.losses)
-
+              StatsPieChart(playerStats.wins ?? 0,
+                  playerStats.draws ?? 0, playerStats.losses?? 0)
             ],
           ),
         ),
-      ),
+      ):Center(child: Text("BRAK DANYCH")),
     );
   }
+
+
+  void changeStats(BuildContext context,String statsName){
+    Provider.of<ChessDataProvider>(context,listen: false).changeStats(statsName);
+  }
+
 }

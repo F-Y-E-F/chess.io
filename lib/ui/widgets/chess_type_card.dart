@@ -1,19 +1,29 @@
+import 'package:chess_io/data/remote/providers/chess_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class ChessTypeCard extends StatefulWidget {
+  final String title;
+  final void Function(BuildContext, String) changeStats;
+
+  ChessTypeCard(this.title, this.changeStats);
+
   @override
   _ChessTypeCardState createState() => _ChessTypeCardState();
 }
 
 class _ChessTypeCardState extends State<ChessTypeCard> {
-  var isChecked = false;
-
   @override
   Widget build(BuildContext context) {
+    final isChecked = Provider.of<ChessDataProvider>(context)
+            .currentCheckedStats ==
+        widget.title.toLowerCase();
     return GestureDetector(
-      onTap: () => setState(() => isChecked = !isChecked),
+      onTap: () => setState(() {
+        widget.changeStats(context, widget.title.toLowerCase());
+      }),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 7),
         decoration: BoxDecoration(
@@ -34,7 +44,7 @@ class _ChessTypeCardState extends State<ChessTypeCard> {
         padding: const EdgeInsets.symmetric(horizontal: 70),
         child: Center(
             child: Text(
-          'Blitz',
+          widget.title,
           style: GoogleFonts.lato(
               color: isChecked ? Colors.white : Theme.of(context).primaryColor,
               fontSize: 15,

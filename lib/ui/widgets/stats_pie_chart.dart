@@ -51,8 +51,8 @@ class StatsPieChartState extends State<StatsPieChart> {
                               sectionsSpace: 0,
                               centerSpaceRadius: 60,
                               sections: showingSections()),
-                          swapAnimationCurve: Curves.easeInOut,
-                          swapAnimationDuration: Duration(seconds: 2),
+                          swapAnimationCurve: Curves.linear,
+                          swapAnimationDuration: Duration(seconds: 1),
                         ),
                         Align(
                           child: Text(
