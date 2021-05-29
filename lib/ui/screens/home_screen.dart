@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: (playerStats != null)
           ? SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: SafeArea(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -144,13 +145,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     StatsPieChart(playerStats.wins ?? 0, playerStats.draws ?? 0,
                         playerStats.losses ?? 0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('All Games'),
+                    ),
                     Consumer<GamesProvider>(
                       builder: (_, gamesProvider, __) => ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemCount: gamesProvider.games.length,
-                        itemBuilder: (context,index) => ChessGame(gamesProvider.games[index].isWin),
+                        itemBuilder: (context, index) => ChessGame(
+                          gamesProvider.games[index].opponentUserName,
+                          gamesProvider.games[index].time,
+                          gamesProvider.games[index].whoWin,
+                          gamesProvider.games[index].playerColor,
+                          gamesProvider.games[index].userNick,
+                          gamesProvider.games[index].chessType,
+                          gamesProvider.games[index].chessTime,
+                        ),
                       ),
                     )
                   ],

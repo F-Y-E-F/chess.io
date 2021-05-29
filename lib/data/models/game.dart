@@ -4,46 +4,71 @@ class Game {
   String url;
   String chessType;
   int time;
-  bool isWin;
+  WinType whoWin;
   String winType;
+  String userNick;
   String opponentUserName;
   int opponentRating;
+  String playerColor;
+  String chessTime;
 
   Game(
       {@required this.url,
       @required this.time,
       @required this.chessType,
-      @required this.isWin,
+      @required this.whoWin,
       @required this.opponentRating,
       @required this.opponentUserName,
-      @required this.winType});
+      @required this.winType,
+      @required this.playerColor,
+      @required this.userNick,
+      @required this.chessTime});
 
   factory Game.fromJson(Map<String, dynamic> map, String userName) {
     int opponentRating;
     String opponentUserName;
-    bool isWin;
+    WinType whoWin;
     String winType;
+    String color;
 
-    if((map['white']['username']).toString().toLowerCase() == userName.toLowerCase()){
+    if ((map['white']['username']).toString().toLowerCase() ==
+        userName.toLowerCase()) {
       opponentRating = map['black']['rating'];
       opponentUserName = map['black']['username'];
-      isWin = map['white']['result'] == 'win' ? true : false;
-      winType = isWin ? map['black']['result'] : map['white']['result'];
-    }else{
+      whoWin = map['white']['result'] == 'win'
+          ? WinType.PLAYER_WIN
+          : map['black']['result'] == 'win'
+              ? WinType.OPPONENT_WIN
+              : WinType.DRAW;
+      winType = whoWin == WinType.PLAYER_WIN
+          ? map['black']['result']
+          : map['white']['result'];
+      color = 'white';
+    } else {
       opponentRating = map['white']['rating'];
       opponentUserName = map['white']['username'];
-      isWin = map['black']['result'] == 'win' ? true : false;
-      winType = isWin ? map['white']['result'] : map['black']['result'];
+      whoWin = map['black']['result'] == 'win'
+          ? WinType.PLAYER_WIN
+          : map['white']['result'] == 'win'
+              ? WinType.OPPONENT_WIN
+              : WinType.DRAW;
+      winType = whoWin == WinType.PLAYER_WIN
+          ? map['white']['result']
+          : map['black']['result'];
+      color = 'black';
     }
     return Game(
-      chessType: map['time_class'],
-      time: map['end_time'],
-      isWin: isWin,
-      opponentRating: opponentRating,
-      opponentUserName: opponentUserName,
-      url: map['url'],
-      winType: winType,
-    );
-
+        chessType: map['time_class'],
+        time: map['end_time'],
+        chessTime: map['time_control'],
+        whoWin: whoWin,
+        opponentRating: opponentRating,
+        opponentUserName: opponentUserName,
+        url: map['url'],
+        winType: winType,
+        playerColor: color,
+        userNick: userName);
   }
 }
+
+enum WinType { PLAYER_WIN, OPPONENT_WIN, DRAW }
