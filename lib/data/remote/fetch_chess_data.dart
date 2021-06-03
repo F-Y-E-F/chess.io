@@ -29,7 +29,11 @@ class FetchChessData{
   }
 
   static Future<List<Game>> fetchLastMonthPlayerGames(String userNick) async {
-    final playerGamesResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick/games/2021/05'));
+    var date = DateTime.parse(DateTime.now().toString());
+
+    final playerGamesResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick/games/${date.year}/${date.month>9 ? date.month : "0" + date.month.toString()}'));
+    print(date.year);
+    print(date.month);
     if (playerGamesResponse.statusCode == 200 ) {
       final jsonPlayerStats = jsonDecode(playerGamesResponse.body);
       List<Game> games = [];
@@ -38,7 +42,7 @@ class FetchChessData{
       }
       return games;
     } else {
-      throw Exception('Cannot find player with provided nick on chess.com');
+      throw Exception('An Error Occured try again later');
     }
   }
 

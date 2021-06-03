@@ -32,9 +32,6 @@ class ChessDataProvider with ChangeNotifier{
     }
 
 
-
-
-
     Future<void> setData(String nick) async{
       data = await FetchChessData.fetchChessComPlayerData(nick);
       notifyListeners();

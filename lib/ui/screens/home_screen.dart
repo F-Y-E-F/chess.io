@@ -1,8 +1,8 @@
-import 'package:chess_io/data/remote/fetch_chess_data.dart';
 import 'package:chess_io/data/remote/providers/chess_data_provider.dart';
 import 'package:chess_io/data/remote/providers/games_provider.dart';
 import 'package:chess_io/ui/widgets/chess_game.dart';
 import 'package:chess_io/ui/widgets/chess_type_card.dart';
+import 'package:chess_io/ui/widgets/ranking_bar_chart.dart';
 import 'package:chess_io/ui/widgets/stats_pie_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -145,6 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     StatsPieChart(playerStats.wins ?? 0, playerStats.draws ?? 0,
                         playerStats.losses ?? 0),
+                    RankingBarChart(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text('All Games'),
@@ -154,15 +155,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        itemCount: gamesProvider.games.length,
+                        itemCount: gamesProvider.filteredGames.length,
                         itemBuilder: (context, index) => ChessGame(
-                          gamesProvider.games[index].opponentUserName,
-                          gamesProvider.games[index].time,
-                          gamesProvider.games[index].whoWin,
-                          gamesProvider.games[index].playerColor,
-                          gamesProvider.games[index].userNick,
-                          gamesProvider.games[index].chessType,
-                          gamesProvider.games[index].chessTime,
+                          gamesProvider.filteredGames[index].time,
+                          gamesProvider.filteredGames[index].playerColor,
+                          gamesProvider.filteredGames[index].userNick,
+                          gamesProvider.filteredGames[index].opponentUserName,
+                          gamesProvider.filteredGames[index].chessType,
+                          gamesProvider.filteredGames[index].convertedChessTime,
+                          gamesProvider.filteredGames[index].image,
+                          gamesProvider.filteredGames[index].whiteResult,
+                          gamesProvider.filteredGames[index].blackResult,
+                          gamesProvider.filteredGames[index].whoWin,
                         ),
                       ),
                     )
@@ -175,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void changeStats(BuildContext context, String statsName) {
-    Provider.of<ChessDataProvider>(context, listen: false)
-        .changeStats(statsName);
+    Provider.of<ChessDataProvider>(context, listen: false).changeStats(statsName);
+    Provider.of<GamesProvider>(context, listen: false).filterGames(statsName);
   }
 }

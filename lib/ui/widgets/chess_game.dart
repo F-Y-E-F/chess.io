@@ -8,99 +8,108 @@ import 'package:intl/intl.dart';
 class ChessGame extends StatelessWidget {
   final String opponentUserName;
   final int date;
-  final WinType whoWin;
   final String playerColor;
   final String playerNick;
   final String chessType;
   final String chessTime;
+  final String image;
+  final String whiteResult;
+  final String blackResult;
+  final WinType whoWin;
 
-
-  ChessGame(this.opponentUserName,this.date,this.whoWin,this.playerColor,this.playerNick,this.chessType,this.chessTime);
-
-  String get whiteResult => whoWin == WinType.DRAW ? "½" : playerColor == 'white' ? whoWin == WinType.PLAYER_WIN ? '1':'0' : whoWin == WinType.PLAYER_WIN ? '0':'1';
-  String get blackResult => whoWin == WinType.DRAW ? "½" : playerColor == 'black' ? whoWin == WinType.PLAYER_WIN ? '1':'0' : whoWin == WinType.PLAYER_WIN ? '0':'1';
-
-
-  String get image {
-    switch(chessType){
-      case 'bullet': return 'assets/images/bullet.png';
-      case 'blitz': return 'assets/images/blitz.png';
-      case 'rapid': return 'assets/images/rapid.png';
-      case 'daily': return 'assets/images/day.png';
-      default: return 'assets/images/rapid.png';
-    }
-  }
-
-  String get convertedChessTime{
-    switch(chessType){
-      case 'daily': return chessTime.contains('/') ? chessTime.substring(0,chessTime.indexOf('/')+1) + (int.tryParse(chessTime.substring(chessTime.indexOf('/')+1,chessTime.length)) / 86400).round().toString(): chessTime;break;
-      default: return chessTime.contains('+') ? ((int.tryParse(chessTime.substring(0,chessTime.indexOf("+")))/60).round()).toString() + chessTime.substring(chessTime.indexOf("+"),chessTime.length) : ((int.tryParse((chessTime))?? -1)/60).round().toString();break;
-    }
-  }
+  ChessGame(
+      this.date,
+      this.playerColor,
+      this.playerNick,
+      this.opponentUserName,
+      this.chessType,
+      this.chessTime,
+      this.image,
+      this.whiteResult,
+      this.blackResult,
+      this.whoWin);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15,vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
       child: Card(
         color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical:4.0,horizontal: 3),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4.0, horizontal: 3),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        image,
+                        height: 30,
+                        color: image == 'assets/images/rapid.png'
+                            ? Colors.green
+                            : Colors.amber,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                          width: 40,
+                          child: Text(
+                            chessTime,
+                            textAlign: TextAlign.center,
+                          ))
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset(image,height: 30,color: image == 'assets/images/rapid.png' ? Colors.green : Colors.amber,),
-                    SizedBox(height: 5,),
-                    Container(width:45,child: Text(convertedChessTime,textAlign: TextAlign.center,))
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(2)),
+                        ),
+                        Text(playerColor == 'white'
+                            ? playerNick
+                            : opponentUserName),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              border: Border.all(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(2)),
+                        ),
+                        Text(playerColor == 'black'
+                            ? playerNick
+                            : opponentUserName),
+                      ],
+                    ),
                   ],
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 7,vertical: 5),
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black,width: 2),
-                          borderRadius: BorderRadius.circular(2)
-                        ),
-                      ),
-                      Text(playerColor == 'white' ? playerNick : opponentUserName),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 7,vertical: 5),
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            border: Border.all(color: Colors.black,width: 2),
-                            borderRadius: BorderRadius.circular(2)
-                        ),
-                      ),
-                      Text(playerColor == 'black' ? playerNick : opponentUserName),
-                    ],
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Row(
+                Expanded(
+                    child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Column(
@@ -108,24 +117,47 @@ class ChessGame extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(whiteResult),
-                        SizedBox(height: 1,),
+                        SizedBox(
+                          height: 1,
+                        ),
                         Text(blackResult),
-                        SizedBox(height: 1,),
+                        SizedBox(
+                          height: 1,
+                        ),
                       ],
                     ),
-                    SizedBox(width: 5,),
-                    if(whoWin == WinType.PLAYER_WIN)Icon(Icons.add_box_rounded,color: const Color(0xff29b400),),
-                    if(whoWin == WinType.OPPONENT_WIN)Icon(Icons.indeterminate_check_box,color: Colors.red[600],),
-                    if(whoWin == WinType.DRAW)Icon(Icons.adjust_rounded,color: Colors.amber[600],),
-                    SizedBox(width: 5,),
-                    Container(width:60,child: Text(DateFormat.MMMd().format(DateTime.fromMillisecondsSinceEpoch(date*1000)),textAlign: TextAlign.center,))
+                    SizedBox(
+                      width: 5,
+                    ),
+                    if (whoWin == WinType.PLAYER_WIN)
+                      Icon(
+                        Icons.add_box_rounded,
+                        color: const Color(0xff29b400),
+                      ),
+                    if (whoWin == WinType.OPPONENT_WIN)
+                      Icon(
+                        Icons.indeterminate_check_box,
+                        color: Colors.red[600],
+                      ),
+                    if (whoWin == WinType.DRAW)
+                      Icon(
+                        Icons.adjust_rounded,
+                        color: Colors.amber[600],
+                      ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                        width: 60,
+                        child: Text(
+                          DateFormat.MMMd().format(
+                              DateTime.fromMillisecondsSinceEpoch(date * 1000)),
+                          textAlign: TextAlign.center,
+                        ))
                   ],
-                )
-              ),
-
-            ],
-          )
-        ),
+                )),
+              ],
+            )),
       ),
     );
   }

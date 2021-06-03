@@ -9,8 +9,30 @@ class Game {
   String userNick;
   String opponentUserName;
   int opponentRating;
+  int userRating;
   String playerColor;
   String chessTime;
+
+
+  String get whiteResult => whoWin == WinType.DRAW ? "½" : playerColor == 'white' ? whoWin == WinType.PLAYER_WIN ? '1':'0' : whoWin == WinType.PLAYER_WIN ? '0':'1';
+  String get blackResult => whoWin == WinType.DRAW ? "½" : playerColor == 'black' ? whoWin == WinType.PLAYER_WIN ? '1':'0' : whoWin == WinType.PLAYER_WIN ? '0':'1';
+
+  String get image {
+    switch(chessType){
+      case 'bullet': return 'assets/images/bullet.png';
+      case 'blitz': return 'assets/images/blitz.png';
+      case 'rapid': return 'assets/images/rapid.png';
+      case 'daily': return 'assets/images/day.png';
+      default: return 'assets/images/rapid.png';
+    }
+  }
+
+  String get convertedChessTime{
+    switch(chessType){
+      case 'daily': return chessTime.contains('/') ? chessTime.substring(0,chessTime.indexOf('/')+1) + (int.tryParse(chessTime.substring(chessTime.indexOf('/')+1,chessTime.length)) / 86400).round().toString(): chessTime;break;
+      default: return chessTime.contains('+') ? ((int.tryParse(chessTime.substring(0,chessTime.indexOf("+")))/60).round()).toString() + chessTime.substring(chessTime.indexOf("+"),chessTime.length) : ((int.tryParse((chessTime))?? -1)/60).round().toString();break;
+    }
+  }
 
   Game(
       {@required this.url,
@@ -22,10 +44,12 @@ class Game {
       @required this.winType,
       @required this.playerColor,
       @required this.userNick,
-      @required this.chessTime});
+      @required this.chessTime,
+      @required this.userRating});
 
   factory Game.fromJson(Map<String, dynamic> map, String userName) {
     int opponentRating;
+    int userRating;
     String opponentUserName;
     WinType whoWin;
     String winType;
@@ -34,6 +58,7 @@ class Game {
     if ((map['white']['username']).toString().toLowerCase() ==
         userName.toLowerCase()) {
       opponentRating = map['black']['rating'];
+      userRating = map['white']['rating'];
       opponentUserName = map['black']['username'];
       whoWin = map['white']['result'] == 'win'
           ? WinType.PLAYER_WIN
@@ -47,6 +72,7 @@ class Game {
     } else {
       opponentRating = map['white']['rating'];
       opponentUserName = map['white']['username'];
+      userRating = map['black']['rating'];
       whoWin = map['black']['result'] == 'win'
           ? WinType.PLAYER_WIN
           : map['white']['result'] == 'win'
@@ -67,7 +93,8 @@ class Game {
         url: map['url'],
         winType: winType,
         playerColor: color,
-        userNick: userName);
+        userNick: userName,
+        userRating: userRating);
   }
 }
 

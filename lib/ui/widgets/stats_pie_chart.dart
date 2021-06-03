@@ -1,23 +1,19 @@
 import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class StatsPieChart extends StatefulWidget {
+
+
+class StatsPieChart extends StatelessWidget {
   final int losses;
   final int wins;
   final int draws;
 
   StatsPieChart(this.wins, this.draws, this.losses);
 
-  @override
-  State<StatefulWidget> createState() => StatsPieChartState();
-}
-
-class StatsPieChartState extends State<StatsPieChart> {
   @override
   Widget build(BuildContext context) {
     final titleFontStyle = GoogleFonts.lato(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w700);
@@ -56,7 +52,7 @@ class StatsPieChartState extends State<StatsPieChart> {
                         ),
                         Align(
                           child: Text(
-                              (widget.wins + widget.draws + widget.losses)
+                              (wins + draws + losses)
                                   .toString(),style: titleFontStyle.copyWith(fontSize: 24, color: Colors.black),),
                           alignment: Alignment.center,
                         )
@@ -80,7 +76,7 @@ class StatsPieChartState extends State<StatsPieChart> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(widget.wins.toString(),style: titleFontStyle),
+                                  Text(wins.toString(),style: titleFontStyle),
                                   Text('WON',style: subTitleFontStyle),
                                 ],
                               ),
@@ -95,7 +91,7 @@ class StatsPieChartState extends State<StatsPieChart> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(widget.losses.toString(),style: titleFontStyle),
+                                  Text(losses.toString(),style: titleFontStyle),
                                   Text('LOST',style: subTitleFontStyle),
                                 ],
                               ),
@@ -112,7 +108,7 @@ class StatsPieChartState extends State<StatsPieChart> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(widget.draws.toString(),style: titleFontStyle,),
+                                  Text(draws.toString(),style: titleFontStyle,),
                                   Text('DRAW',style: subTitleFontStyle,),
                                 ],
                               ),
@@ -137,16 +133,16 @@ class StatsPieChartState extends State<StatsPieChart> {
       switch (i) {
         case 0:
           return PieChartSectionData(
-              color: Colors.red[600], value: widget.losses.toDouble(), radius: radius, showTitle: false);
+              color: Colors.red[600], value: losses.toDouble(), radius: radius, showTitle: false);
         case 1:
           return PieChartSectionData(
               color: const Color(0xff29b400),
-              value: widget.wins.toDouble(),
+              value: wins.toDouble(),
               radius: radius,
               showTitle: false);
         case 2:
           return PieChartSectionData(
-              color: Colors.amber[600], value: widget.draws.toDouble(), radius: radius, showTitle: false);
+              color: Colors.amber[600], value: draws.toDouble(), radius: radius, showTitle: false);
         default:
           throw Error();
       }
