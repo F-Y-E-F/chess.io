@@ -11,9 +11,9 @@ class RankingBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<GamesProvider>(
       builder: (_, gamesProvider, __) => gamesProvider.filteredGames.isNotEmpty ? AspectRatio(
-        aspectRatio: 1,
+        aspectRatio: 1.05,
         child: Card(
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -25,7 +25,7 @@ class RankingBarChart extends StatelessWidget {
             }).toList()),),
           ),
         ),
-      ): Text("XD"),
+      ):Container(),
     );
   }
 

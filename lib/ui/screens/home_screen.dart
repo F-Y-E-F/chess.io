@@ -1,10 +1,14 @@
+import 'dart:ui';
+
 import 'package:chess_io/data/remote/providers/chess_data_provider.dart';
 import 'package:chess_io/data/remote/providers/games_provider.dart';
+import 'package:chess_io/ui/widgets/best_worst_game.dart';
 import 'package:chess_io/ui/widgets/chess_game.dart';
 import 'package:chess_io/ui/widgets/chess_type_card.dart';
 import 'package:chess_io/ui/widgets/ranking_bar_chart.dart';
 import 'package:chess_io/ui/widgets/stats_pie_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> getGames() async {
     final provider = Provider.of<ChessDataProvider>(context, listen: false);
     await Provider.of<GamesProvider>(context, listen: false)
-        .setGames(provider.playerData.userName);
+        .setGames(provider.playerData.userName,Provider.of<ChessDataProvider>(context,listen: false).currentCheckedStats);
   }
 
   @override
@@ -145,13 +149,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     StatsPieChart(playerStats.wins ?? 0, playerStats.draws ?? 0,
                         playerStats.losses ?? 0),
-                    RankingBarChart(),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('All Games'),
+                      padding: const EdgeInsets.only(top:25.0,bottom:10),
+                      child: Text(
+                        "Monthly Stats (${DateTime.now().month > 10 ? DateTime.now().month: '0'+DateTime.now().month.toString()}.${DateTime.now().year})",
+                        style: GoogleFonts.lato(
+                            color: Colors.grey[500], fontSize: 20,fontWeight: FontWeight.bold),
+                      ),
                     ),
+                    BestWorstGame(),
+                    RankingBarChart(),
                     Consumer<GamesProvider>(
-                      builder: (_, gamesProvider, __) => ListView.builder(
+                      builder: (_, gamesProvider, __) => gamesProvider.filteredGames.length > 0 ? ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
@@ -168,6 +177,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           gamesProvider.filteredGames[index].blackResult,
                           gamesProvider.filteredGames[index].whoWin,
                         ),
+                      ):Padding(
+                        padding: const EdgeInsets.symmetric(horizontal:48,vertical: 16),
+                        child: Text('You don\'t play any ${Provider.of<ChessDataProvider>(context, listen: false).currentCheckedStats} chess games in this month',style: TextStyle(
+                          color: theme.primaryColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),textAlign: TextAlign.center,),
                       ),
                     )
                   ],

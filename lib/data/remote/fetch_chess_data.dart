@@ -32,8 +32,6 @@ class FetchChessData{
     var date = DateTime.parse(DateTime.now().toString());
 
     final playerGamesResponse = await http.get(Uri.parse('https://api.chess.com/pub/player/$userNick/games/${date.year}/${date.month>9 ? date.month : "0" + date.month.toString()}'));
-    print(date.year);
-    print(date.month);
     if (playerGamesResponse.statusCode == 200 ) {
       final jsonPlayerStats = jsonDecode(playerGamesResponse.body);
       List<Game> games = [];
