@@ -35,7 +35,7 @@ class RankingBarChart extends StatelessWidget {
     final minY = ratingList.map<double>((e) => e['rating'].toDouble()).reduce(min);
     return LineChartData(
       gridData: FlGridData(
-        horizontalInterval: maxY-minY > 100 ?  100 : 10,
+        horizontalInterval: maxY-minY > 150 ?  100 : 10,
         show: true,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -49,7 +49,7 @@ class RankingBarChart extends StatelessWidget {
         bottomTitles: SideTitles(
           showTitles: true,getTitles: (f) => ""),
         leftTitles: SideTitles(
-          interval: maxY-minY > 100 ?  100 : 10,
+          interval: maxY-minY > 150 ?  100 : 10,
           showTitles: true,
           getTextStyles: (value) => const TextStyle(
             color: Color(0xff67727d),
@@ -57,7 +57,7 @@ class RankingBarChart extends StatelessWidget {
             fontSize: 15,
           ),
           getTitles: (value) {
-             return ((value.toInt()/10).ceilToDouble()*10).toInt().toString();
+             return (((value.toInt()/10).ceilToDouble()*10).toInt()-10).toString();
           },
           reservedSize: 28,
           margin: 12,

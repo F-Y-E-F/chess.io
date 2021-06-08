@@ -113,7 +113,7 @@ class BestWorstGame extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
-                      width: 20,
+                      width: 15,
                     ),
                   ],
                 ),

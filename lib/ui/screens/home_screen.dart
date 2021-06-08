@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final playerData = provider.playerData;
     final playerFullStats = provider.playerFullStats;
     final playerStats = provider.playerStats;
+    final int averageOpponentsRating = Provider.of<GamesProvider>(context).averageOpponentsRating;
 
     return Scaffold(
       body: (playerStats != null)
@@ -158,6 +159,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     BestWorstGame(),
+                    if(averageOpponentsRating!=null) Container(
+                      margin: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 10),
+                      width: double.infinity,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Average Opponents Rating",
+                                style: GoogleFonts.lato(
+                                    color: Colors.grey[500], fontSize: 16),
+                              ),
+                              Text(
+                                averageOpponentsRating.toString(),
+                                style: theme.textTheme.headline1,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     RankingBarChart(),
                     Consumer<GamesProvider>(
                       builder: (_, gamesProvider, __) => gamesProvider.filteredGames.length > 0 ? ListView.builder(

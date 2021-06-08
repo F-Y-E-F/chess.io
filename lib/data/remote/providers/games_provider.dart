@@ -16,6 +16,9 @@ class GamesProvider with ChangeNotifier {
   Game _worstGame;
   Game get worstGame => _worstGame;
 
+  int _averageOpponentsRating;
+  int get averageOpponentsRating => _averageOpponentsRating;
+
 
   Future<void> setGames(String nickName,String curType) async {
     try {
@@ -37,6 +40,12 @@ class GamesProvider with ChangeNotifier {
 
     _bestGame = null;
     _worstGame = null;
+
+    if(_filteredGames.isNotEmpty && _filteredGames!=null)
+      _averageOpponentsRating = _filteredGames.map((game) => game.opponentRating).reduce((a, b) => a + b) ~/ _filteredGames.length;
+    else
+      _averageOpponentsRating = null;
+
     _filteredGames.forEach((game) {
         if(_worstGame==null && game.whoWin == WinType.OPPONENT_WIN){
           _worstGame = game;
