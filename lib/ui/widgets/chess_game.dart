@@ -33,7 +33,9 @@ class ChessGame extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
       child: GestureDetector(
-        onTap: () => Navigator.of(context).push(CustomPageTransition(page: GameDetailsScreen(),transitionType: PageTransitions.SCALE)),
+        onTap: () => Navigator.of(context).push(CustomPageTransition(
+            page: GameDetailsScreen(date),
+            transitionType: PageTransitions.SCALE)),
         child: Card(
           color: Colors.white,
           shape: RoundedRectangleBorder(
@@ -44,8 +46,8 @@ class ChessGame extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 4.0, horizontal: 3),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 4.0, horizontal: 3),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,7 +67,8 @@ class ChessGame extends StatelessWidget {
                             child: Text(
                               chessTime,
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize:chessTime.length>=5 ? 12:14),
+                              style: TextStyle(
+                                  fontSize: chessTime.length >= 5 ? 12 : 14),
                             ))
                       ],
                     ),
@@ -77,30 +80,34 @@ class ChessGame extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            margin:
-                                EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 5),
                             width: 12,
                             height: 12,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                border: Border.all(color: Colors.black, width: 2),
+                                border:
+                                    Border.all(color: Colors.black, width: 2),
                                 borderRadius: BorderRadius.circular(2)),
                           ),
-                          Text(playerColor == 'white'
-                              ? playerNick
-                              : opponentUserName),
+                          Text(
+                            playerColor == 'white'
+                                ? playerNick
+                                : opponentUserName,
+                          ),
                         ],
                       ),
                       Row(
                         children: [
                           Container(
-                            margin:
-                                EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 5),
                             width: 12,
                             height: 12,
                             decoration: BoxDecoration(
                                 color: Colors.black,
-                                border: Border.all(color: Colors.black, width: 2),
+                                border:
+                                    Border.all(color: Colors.black, width: 2),
                                 borderRadius: BorderRadius.circular(2)),
                           ),
                           Text(playerColor == 'black'
@@ -153,7 +160,8 @@ class ChessGame extends StatelessWidget {
                           width: 60,
                           child: Text(
                             DateFormat.MMMd().format(
-                                DateTime.fromMillisecondsSinceEpoch(date * 1000)),
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    date * 1000)),
                             textAlign: TextAlign.center,
                           ))
                     ],

@@ -5,6 +5,7 @@ import 'package:chess_io/data/remote/providers/games_provider.dart';
 import 'package:chess_io/ui/widgets/best_worst_game.dart';
 import 'package:chess_io/ui/widgets/chess_game.dart';
 import 'package:chess_io/ui/widgets/chess_type_card.dart';
+import 'package:chess_io/ui/widgets/one_data_card.dart';
 import 'package:chess_io/ui/widgets/ranking_bar_chart.dart';
 import 'package:chess_io/ui/widgets/stats_pie_chart.dart';
 import 'package:flutter/material.dart';
@@ -95,59 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                          left: 20, right: 20, top: 30, bottom: 10),
-                      width: double.infinity,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Current Ranking",
-                                style: GoogleFonts.lato(
-                                    color: Colors.grey[500], fontSize: 16),
-                              ),
-                              Text(
-                                (playerStats.currentRating ?? 0).toString(),
-                                style: theme.textTheme.headline1,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    const SizedBox(height: 25,),
+                    OneDataCard("Current Ranking", (playerStats.currentRating ?? 0).toString()),
                     if (playerStats.bestRating != null)
-                      Container(
-                        margin: const EdgeInsets.only(
-                            left: 20, right: 20, top: 0, bottom: 10),
-                        width: double.infinity,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Best Ranking (${playerStats.formattedDate})",
-                                  style: GoogleFonts.lato(
-                                      color: Colors.grey[500], fontSize: 16),
-                                ),
-                                Text(
-                                  playerStats.bestRating.toString(),
-                                  style: theme.textTheme.headline1,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      OneDataCard("Best Ranking (${playerStats.formattedDate})",  playerStats.bestRating.toString()),
                     StatsPieChart(playerStats.wins ?? 0, playerStats.draws ?? 0,
                         playerStats.losses ?? 0),
                     Padding(
@@ -159,32 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     BestWorstGame(),
-                    if(averageOpponentsRating!=null) Container(
-                      margin: const EdgeInsets.only(
-                          left: 20, right: 20, top: 10, bottom: 10),
-                      width: double.infinity,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Average Opponents Rating",
-                                style: GoogleFonts.lato(
-                                    color: Colors.grey[500], fontSize: 16),
-                              ),
-                              Text(
-                                averageOpponentsRating.toString(),
-                                style: theme.textTheme.headline1,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    if(averageOpponentsRating!=null) OneDataCard("Average Opponents Rating", averageOpponentsRating.toString()),
                     RankingBarChart(),
                     Consumer<GamesProvider>(
                       builder: (_, gamesProvider, __) => gamesProvider.filteredGames.length > 0 ? ListView.builder(

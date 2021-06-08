@@ -64,4 +64,7 @@ class GamesProvider with ChangeNotifier {
     });
     notifyListeners();
   }
+
+  Game getGameByTime(int time) => _games.firstWhere((game) => game.time == time);
+
 }
