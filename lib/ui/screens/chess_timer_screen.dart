@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:chess_io/ui/helpers/custom_page_transition.dart';
+import 'package:chess_io/ui/screens/chess_timer_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -144,7 +146,9 @@ class _ChessTimerScreenState extends State<ChessTimerScreen>
                           Icons.settings,
                           color: Colors.black,
                         ),
-                        onPressed: () {})),
+                        onPressed: () {
+                          Navigator.of(context).push(CustomPageTransition(page: ChessTimerSettings()));
+                        })),
                 Container(
                   child: IconButton(
                     iconSize: 45,

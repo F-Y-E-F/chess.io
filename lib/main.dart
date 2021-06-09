@@ -3,6 +3,7 @@ import 'package:chess_io/data/remote/providers/games_provider.dart';
 import 'package:chess_io/ui/screens/input_nickname_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -15,13 +16,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (BuildContext context) => ChessDataProvider()),
-        ChangeNotifierProvider(create: (BuildContext context) => GamesProvider()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => ChessDataProvider()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => GamesProvider()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-
+            appBarTheme: AppBarTheme(
+                backwardsCompatibility: false,
+                systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white,),
+                color: Colors.white,
+                centerTitle: true,
+                iconTheme: IconThemeData(
+                  color: const Color(0xff0D0221), //change your color here
+                ),
+                elevation: 1),
             scaffoldBackgroundColor: const Color(0xffefefef),
             primaryColor: const Color(0xff0D0221),
             accentColor: Colors.red[600],
@@ -41,8 +53,8 @@ class MyApp extends StatelessWidget {
                   fontSize: 20),
               headline5:
                   GoogleFonts.lato(textStyle: TextStyle(color: Colors.red)),
-              headline6:
-                  GoogleFonts.lato(textStyle: TextStyle(color: Colors.grey[400],fontSize: 18)),
+              headline6: GoogleFonts.lato(
+                  textStyle: TextStyle(color: Colors.grey[400], fontSize: 18)),
             ),
             inputDecorationTheme: InputDecorationTheme(
                 labelStyle: TextStyle(color: const Color(0xff0D0221)),
@@ -63,7 +75,11 @@ class MyApp extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                     primary: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 20))),snackBarTheme: SnackBarThemeData(backgroundColor:  const Color(0xff0D0221),behavior: SnackBarBehavior.floating,)),
+                    padding: const EdgeInsets.symmetric(vertical: 20))),
+            snackBarTheme: SnackBarThemeData(
+              backgroundColor: const Color(0xff0D0221),
+              behavior: SnackBarBehavior.floating,
+            )),
         home: InputNicknameScreen(),
       ),
     );
