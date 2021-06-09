@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class ChessTimeCategoryCard extends StatelessWidget {
+class ChessTimeCard extends StatelessWidget {
   final String title;
-  final String image;
-
-  ChessTimeCategoryCard(this.title, this.image);
+  final String time;
+  ChessTimeCard(this.title,this.time);
 
   @override
   Widget build(BuildContext context) {
@@ -14,26 +14,18 @@ class ChessTimeCategoryCard extends StatelessWidget {
         margin: const EdgeInsets.all(7),
         color: Colors.white,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Image.asset(
-            image,
-            height: 60,
-            fit: BoxFit.fill,
-            color: image == 'assets/images/classic.png'
-                ? Colors.black
-                : image == 'assets/images/rapid.png'
-                    ? Colors.green
-                    : Colors.amber,
-          ),
+          Text(title,style: GoogleFonts.lato(color: Theme.of(context).primaryColor.withOpacity(0.4),fontSize: 15)),
           Padding(
-            padding: const EdgeInsets.only(top: 12.0),
+            padding: const EdgeInsets.all(2.0),
             child: Text(
-              title,
+              time,
               style: Theme.of(context)
                   .textTheme
-                  .headline6
-                  .copyWith(color: Theme.of(context).primaryColor),
+                  .headline4
+                  .copyWith(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold,fontSize: 36),
             ),
-          )
+          ),
+          Text('min',style: GoogleFonts.lato(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold,fontSize: 18),),
         ]),
       ),
     );

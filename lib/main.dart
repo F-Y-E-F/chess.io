@@ -26,8 +26,6 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
             appBarTheme: AppBarTheme(
-                backwardsCompatibility: false,
-                systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white,),
                 color: Colors.white,
                 centerTitle: true,
                 iconTheme: IconThemeData(
