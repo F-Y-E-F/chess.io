@@ -6,7 +6,9 @@ import 'package:chess_io/data/remote/providers/chess_data_provider.dart';
 import 'package:chess_io/ui/helpers/custom_page_transition.dart';
 import 'package:chess_io/ui/helpers/dialogs.dart';
 import 'package:chess_io/ui/helpers/snacks.dart';
+import 'package:chess_io/ui/screens/chess_timer_screen.dart';
 import 'package:chess_io/ui/screens/home_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +71,21 @@ class InputNicknameScreen extends StatelessWidget {
                     await submitRequest(context);
                   },
                   child: Text("Go inside!"),
-                ))
+                )),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push(CustomPageTransition(page: ChessTimerScreen(), transitionType: PageTransitions.SCALE)),
+                child: Container(
+                  color: Colors.red,
+                  padding: const EdgeInsets.all(20),
+                  child: Icon(
+                    Icons.timer_sharp,
+                    size: 40,
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
