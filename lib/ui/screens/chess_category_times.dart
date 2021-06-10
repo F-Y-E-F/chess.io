@@ -1,13 +1,11 @@
 import 'package:chess_io/data/models/chess_time/chess_time.dart';
 import 'package:chess_io/ui/widgets/chess_time_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChessCategoryTimes extends StatelessWidget {
   final String title;
   final List<ChessTime> times;
-
   ChessCategoryTimes(this.title, this.times);
 
   @override
@@ -26,11 +24,8 @@ class ChessCategoryTimes extends StatelessWidget {
               child: GridView.count(
                 crossAxisCount: 2,
                 children: times
-                    .map((type) => ChessTimeCard(
-                        title,
-                        type.time.toString() +
-                            " + " +
-                            type.incrementTime.toString()))
+                    .map((type) =>
+                        ChessTimeCard(title, type.time, type.incrementTime))
                     .toList(),
                 physics: BouncingScrollPhysics(),
               ))),

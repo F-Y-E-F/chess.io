@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chess_io/data/remote/providers/current_time_provider.dart';
 import 'package:chess_io/ui/helpers/custom_page_transition.dart';
 import 'package:chess_io/ui/screens/chess_timer_settings.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pausable_timer/pausable_timer.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChessTimerScreen extends StatefulWidget {
   @override
@@ -36,11 +39,12 @@ class _ChessTimerScreenState extends State<ChessTimerScreen>
   var _blackCountDown = 600;
 
   bool _isBlackLastPaused = false;
-
+  int incrementTime = 0;
   //=====
 
   @override
   void initState() {
+    _setupTimes();
     _whiteTimer = PausableTimer(
       Duration(seconds: 1),
       () {
@@ -147,7 +151,7 @@ class _ChessTimerScreenState extends State<ChessTimerScreen>
                           color: Colors.black,
                         ),
                         onPressed: () {
-                          Navigator.of(context).push(CustomPageTransition(page: ChessTimerSettings()));
+                          Navigator.of(context).push(CustomPageTransition(page: ChessTimerSettings())).then((value) => _resetTimers());
                         })),
                 Container(
                   child: IconButton(
@@ -212,12 +216,18 @@ class _ChessTimerScreenState extends State<ChessTimerScreen>
       if (_whiteTimer.isPaused) {
         _whiteTimer.start();
         _blackTimer.pause();
-        setState(() => _isBlackLastPaused = false);
+        setState(() {
+          _isBlackLastPaused = false;
+          _blackCountDown+=incrementTime;
+        });
 
       } else {
         _whiteTimer.pause();
         _blackTimer.start();
-        setState(() => _isBlackLastPaused = true);
+        setState(() {
+          _isBlackLastPaused = true;
+          _whiteCountDown+=incrementTime;
+        });
       }
     }
   }
@@ -250,20 +260,30 @@ class _ChessTimerScreenState extends State<ChessTimerScreen>
     });
   }
 
-  format(Duration d) => d.toString().substring(2, 7);
+  format(Duration d) => d.inSeconds >= 3600 ? d.toString().substring(0, 7) : d.toString().substring(2, 7);
 
   void _resetTimers() {
     _refreshRotationController.forward().whenComplete(() => _refreshRotationController.reset());
     _isBlackLastPaused = false;
     _whiteTimer.pause();
     _blackTimer.pause();
+    _setupTimes();
     setState(() {
-      _whiteCountDown = 600;
-      _blackCountDown = 600;
       isPlaying = false;
       isPlaying
           ? _playPauseController.forward()
           : _playPauseController.reverse();
+    });
+  }
+
+  Future<void> _setupTimes() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final time = prefs.getInt('time') ?? 600;
+    incrementTime = prefs.getInt('incrementTime') ?? 0;
+    Provider.of<CurrentTimeProvider>(context,listen: false).setTimes(time~/60, incrementTime);
+    setState(() {
+      _whiteCountDown = time;
+      _blackCountDown = time;
     });
   }
 }

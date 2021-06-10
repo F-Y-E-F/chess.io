@@ -1,4 +1,5 @@
 import 'package:chess_io/data/remote/providers/chess_data_provider.dart';
+import 'package:chess_io/data/remote/providers/current_time_provider.dart';
 import 'package:chess_io/data/remote/providers/games_provider.dart';
 import 'package:chess_io/ui/screens/input_nickname_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +21,8 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => ChessDataProvider()),
         ChangeNotifierProvider(
             create: (BuildContext context) => GamesProvider()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => CurrentTimeProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
