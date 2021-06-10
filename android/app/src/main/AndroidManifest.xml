@@ -4,6 +4,9 @@
    <application
         android:label="chess_io"
         android:icon="@mipmap/ic_launcher">
+       <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-9869946146287638~7559603585"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
