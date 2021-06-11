@@ -39,6 +39,7 @@ dependencies:
   pausable_timer: ^1.0.0+1
   shared_preferences: ^2.0.6
   google_mobile_ads: ^0.13.0
+  flutter_chess_board: ^0.9.7
 
 dev_dependencies:
   flutter_test:

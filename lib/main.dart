@@ -1,6 +1,7 @@
 import 'package:chess_io/data/remote/providers/chess_data_provider.dart';
 import 'package:chess_io/data/remote/providers/current_time_provider.dart';
 import 'package:chess_io/data/remote/providers/games_provider.dart';
+import 'package:chess_io/helpers/ad_state.dart';
 import 'package:chess_io/ui/screens/input_nickname_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,8 +10,9 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
-  runApp(MyApp());
+  final initFuture = MobileAds.instance.initialize();
+  final adState = AdState(initFuture);
+  runApp(Provider.value(value: adState, builder: (context, child) => MyApp()));
 }
 
 class MyApp extends StatelessWidget {
