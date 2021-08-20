@@ -15,7 +15,7 @@ class CustomPageTransition extends PageRouteBuilder {
   RouteSettings get settings => RouteSettings(arguments: this.settingsArgs);
 
   CustomPageTransition(
-      {@required this.page,
+      {required this.page,
       this.transitionType = PageTransitions.SLIDE,
       this.isLeft = true,
       this.settingsArgs})
